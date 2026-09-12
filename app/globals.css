@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@theme {
+  /* Core palette — deep petrol + warm amber, cool stone paper.
+     Deliberately not cream+terracotta or near-black+neon. */
+  --color-ink: #12211f;
+  --color-petrol: #1b4b43;
+  --color-petrol-light: #2c6358;
+  --color-paper: #e9ede7;
+  --color-paper-dim: #dde3d8;
+  --color-paper-line: #cdd5c8;
+  --color-amber: #e8a33d;
+  --color-amber-dim: #f2cb8e;
+  --color-clay: #b5482f;
+  --color-clay-dim: #f0d9d2;
+  --color-muted: #57645d;
+
+  --font-display: var(--font-newsreader), ui-serif, Georgia, serif;
+  --font-body: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+::selection {
+  background-color: var(--color-amber-dim);
+  color: var(--color-ink);
+}
+
+/* Respect reduced-motion preferences globally. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-rise-in {
+  animation: rise-in 0.28s ease-out;
+}
+
+/* Visible keyboard focus everywhere, styled to match the palette. */
+:focus-visible {
+  outline: 2px solid var(--color-petrol);
+  outline-offset: 2px;
+}
