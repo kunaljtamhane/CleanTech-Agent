@@ -32,17 +32,44 @@ CleanTech Desk is a full-stack retrieval-augmented generation (RAG) application:
 - 🎨 **Editorial design** — built around the fact that the underlying data is literally a news archive, not a generic chatbot skin
 ## Architecture
  
-```
-┌─────────────────────┐         ┌──────────────────────┐         ┌────────────────────┐
-│   Next.js frontend   │  HTTPS  │   FastAPI backend     │         │   Chroma vector DB  │
-│   (Vercel)           │────────▶│   (Modal, serverless) │────────▶│   (150k chunks,      │
-│                       │ server- │                        │  local │   Modal Volume)      │
-│  Auth.js + Google     │  to-    │  LangChain agent       │  disk  │                      │
-│  Drizzle ORM          │  server │  Citation tracker      │        └────────────────────┘
-│  Neon Postgres        │         │  Guardrails            │
-│  (users, chats,       │         │                        │───────▶ OpenAI API
-│   messages)           │         │                        │        (embeddings + gpt-4o-mini)
-└─────────────────────┘         └──────────────────────┘
+```mermaid
+flowchart LR
+    U["🧑 User"] -->|HTTPS| FE
+ 
+    subgraph Vercel["Vercel"]
+        FE["Next.js Frontend<br/>Auth.js + Google sign-in"]
+    end
+ 
+    subgraph Neon["Neon"]
+        DB[("Postgres<br/>users · chats · messages")]
+    end
+ 
+    subgraph Modal["Modal (serverless)"]
+        API["FastAPI"]
+        Agent["LangChain Agent<br/>(gpt-4o-mini)"]
+        Guard["Guardrails"]
+        Cite["Citation Tracker"]
+        API --> Guard --> Agent
+        Agent --> Cite
+    end
+ 
+    subgraph Vol["Modal Volume"]
+        Chroma[("Chroma Vector DB<br/>150,568 chunks")]
+    end
+ 
+    OpenAI["OpenAI API<br/>embeddings + generation"]
+ 
+    FE <-->|read/write chat history| DB
+    FE -->|"server-to-server<br/>(API key auth)"| API
+    Agent -->|similarity search| Chroma
+    Agent <--> OpenAI
+ 
+    classDef vercel fill:#1B4B43,color:#fff,stroke:#1B4B43
+    classDef modal fill:#E9EDE7,color:#12211F,stroke:#1B4B43
+    classDef store fill:#E8A33D,color:#12211F,stroke:#1B4B43
+    class FE vercel
+    class API,Agent,Guard,Cite modal
+    class DB,Chroma store
 ```
  
 The browser never talks to the RAG backend directly — every chat message goes through the Next.js server first (which handles auth and persistence), which then calls the FastAPI backend server-to-server. The backend itself is stateless per request; all conversation history lives in Postgres, not in the model's context.
