@@ -1,7 +1,7 @@
 # CleanTech Desk
 
 [![Try it live](https://img.shields.io/badge/Try_it_live-clean--tech--agent.vercel.app-1B4B43?style=for-the-badge&logo=googlechrome&logoColor=white)](https://clean-tech-agent.vercel.app)
-[![Notebook File](https://img.shields.io/badge/Notebook_File-Clean--tech-1B4B43?style=for-the-badge&logo=googlecolab&logoColor=white)]([https://clean-tech-agent.vercel.app](https://colab.research.google.com/drive/1GKY15lERbT1t_gq6uoL-WjLLUppMKpWy))
+[![Notebook File](https://img.shields.io/badge/Notebook_File-Clean--tech-1B4B43?style=for-the-badge&logo=googlecolab&logoColor=white)]([https://clean-tech-agent.vercel.app](https://colab.research.google.com/drive/1GKY15lERbT1t_gq6uoL-WjLLUppMKpWy](https://drive.google.com/file/d/1GKY15lERbT1t_gq6uoL-WjLLUppMKpWy/view?usp=sharing)))
  
 **A citation-grounded RAG research assistant for clean technology and climate news — built from scratch through evaluation, guardrails, authentication, and production deployment.**
  
